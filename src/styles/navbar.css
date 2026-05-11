@@ -13,9 +13,24 @@
 }
 
 .brand {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
   font-weight: 800;
   text-decoration: none;
   letter-spacing: 0.2px;
+}
+
+.brand-logo {
+  width: 80px;
+  height: 80px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  padding: 3px;
+  border-radius: 12px;
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
 }
 
 .nav-links {
@@ -53,6 +68,17 @@
   border-radius: 8px;
   background: #fff;
   color: var(--primary);
+}
+
+.role-box {
+  display: grid;
+  gap: 4px;
+  max-width: 280px;
+}
+
+.role-box small {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.25;
 }
 
 @media (max-width: 760px) {
