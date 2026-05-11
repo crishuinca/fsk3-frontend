@@ -67,8 +67,8 @@ export const permissionsByRole = {
 export const navItems = [
   { to: '/', label: 'Inicio' },
   { to: '/perfil', label: 'Perfil estudiante', permission: 'canViewPerfil' },
-  { to: '/anotacion', label: 'Anotacion', permission: 'canViewAnotacion' },
-  { to: '/asistencia', label: 'Asistencia', permission: 'canViewAsistencia' },
+  { to: '/anotacion', label: 'Anotaciones del estudiante', permission: 'canViewAnotacion' },
+  { to: '/asistencia', label: 'Asistencia del estudiante', permission: 'canViewAsistencia' },
   { to: '/registrar-anotacion', label: 'Registrar anotacion', permission: 'canCreateAnotacion' },
   { to: '/registrar-asistencia', label: 'Registrar asistencia', permission: 'canCreateAsistencia' },
 ]
