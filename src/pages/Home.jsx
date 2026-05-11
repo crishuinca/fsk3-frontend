@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 import InfoCard from '../components/InfoCard'
-import { API_URL } from '../services/bffApi'
+import RoleGuard from '../components/RoleGuard'
+import { useRole } from '../hooks/useRole'
 
 function Home() {
+  const { currentRole, permissions } = useRole()
+
   return (
     <section className="page">
       <div className="hero-panel">
@@ -13,24 +16,42 @@ function Home() {
         </p>
       </div>
 
-      <div className="grid">
-        <InfoCard title="Perfil del estudiante">
-          <p>Obtiene el perfil completo del estudiante, incluyendo sus datos, curso, anotaciones y asistencias.</p>
-          <Link className="button" to="/perfil">Ver perfil</Link>
-        </InfoCard>
-
-        <InfoCard title="Detalle de anotacion">
-          <p>Obtiene el detalle de una anotacion, incluyendo los datos del estudiante y su curso.</p>
-          <Link className="button" to="/anotacion">Ver anotacion</Link>
-        </InfoCard>
-
-        <InfoCard title="Detalle de asistencia">
-          <p>Obtiene el detalle de una asistencia, incluyendo los datos del estudiante y su curso.</p>
-          <Link className="button" to="/asistencia">Ver asistencia</Link>
-        </InfoCard>
+      <div className="role-summary">
+        <div>
+          <span>Rol activo</span>
+          <strong>{currentRole.label}</strong>
+          <p>{currentRole.description}</p>
+        </div>
+        <ul>
+          <li>{permissions.canViewPerfil ? 'Puede ver perfil de estudiante' : 'No puede ver perfiles'}</li>
+          <li>{permissions.canCreateAnotacion ? 'Puede registrar anotaciones' : 'No registra anotaciones'}</li>
+          <li>{permissions.canCreateAsistencia ? 'Puede registrar asistencia' : 'Solo consulta asistencia'}</li>
+        </ul>
       </div>
 
-      
+      <div className="grid">
+        <RoleGuard permission="canViewPerfil">
+          <InfoCard title="Perfil del estudiante">
+            <p>Obtiene el perfil completo del estudiante, incluyendo sus datos, curso, anotaciones y asistencias.</p>
+            <Link className="button" to="/perfil">Ver perfil</Link>
+          </InfoCard>
+        </RoleGuard>
+
+        <RoleGuard permission="canViewAnotacionDetalle">
+          <InfoCard title="Detalle de anotacion">
+            <p>Obtiene el detalle de una anotacion, incluyendo los datos del estudiante y su curso.</p>
+            <Link className="button" to="/anotacion">Ver anotacion</Link>
+          </InfoCard>
+        </RoleGuard>
+
+        <RoleGuard permission="canViewAsistenciaDetalle">
+          <InfoCard title="Detalle de asistencia">
+            <p>Obtiene el detalle de una asistencia, incluyendo los datos del estudiante y su curso.</p>
+            <Link className="button" to="/asistencia">Ver asistencia</Link>
+          </InfoCard>
+        </RoleGuard>
+      </div>
+
     </section>
   )
 }

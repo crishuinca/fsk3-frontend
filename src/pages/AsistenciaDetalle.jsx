@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import Badge from '../components/Badge'
 import ErrorMessage from '../components/ErrorMessage'
 import Field from '../components/Field'
 import InfoCard from '../components/InfoCard'
 import Loading from '../components/Loading'
+import RoleGuard from '../components/RoleGuard'
 import { getAsistenciaDetalle } from '../services/bffApi'
 
 function AsistenciaDetalle() {
@@ -28,9 +30,18 @@ function AsistenciaDetalle() {
   }
 
   return (
-    <section className="page">
-      <h1>Detalle de asistencia</h1>
-      <p>Consulta una asistencia y muestra los datos relacionados del estudiante y curso.</p>
+    <RoleGuard
+      permission="canViewAsistenciaDetalle"
+      fallback={
+        <section className="page">
+          <h1>Acceso restringido</h1>
+          <p>El rol seleccionado puede revisar asistencia desde el perfil del estudiante, pero no accede a esta busqueda directa.</p>
+        </section>
+      }
+    >
+      <section className="page">
+        <h1>Detalle de asistencia</h1>
+        <p>Consulta una asistencia y muestra los datos relacionados del estudiante y curso.</p>
 
       <form className="search-form" onSubmit={buscarDetalle}>
         <label>
@@ -46,24 +57,31 @@ function AsistenciaDetalle() {
       {detalle && (
         <div className="grid">
           <InfoCard title="Asistencia">
+            <Badge tone={detalle.asistencia?.estado}>{detalle.asistencia?.estado}</Badge>
+            <Field label="ID asistencia" value={detalle.asistencia?.id} />
             <Field label="Fecha" value={detalle.asistencia?.fecha} />
-            <Field label="Estado" value={detalle.asistencia?.estado} />
             <Field label="Observacion" value={detalle.asistencia?.observacion || 'Sin observacion'} />
+            <Field label="Registrada por" value={detalle.asistencia?.registradaPor} />
           </InfoCard>
 
-          <InfoCard title="Estudiante">
+          <InfoCard title="Datos del estudiante">
+            <Field label="ID estudiante" value={detalle.estudiante?.id} />
             <Field label="RUT" value={detalle.estudiante?.rut} />
-            <Field label="Nombre" value={`${detalle.estudiante?.nombres || ''} ${detalle.estudiante?.apellidoPaterno || ''}`} />
+            <Field label="Nombre completo" value={`${detalle.estudiante?.nombres || ''} ${detalle.estudiante?.apellidoPaterno || ''} ${detalle.estudiante?.apellidoMaterno || ''}`} />
+            <Field label="Email" value={detalle.estudiante?.email} />
           </InfoCard>
 
-          <InfoCard title="Curso">
+          <InfoCard title="Curso relacionado">
+            <Field label="ID curso" value={detalle.curso?.id} />
             <Field label="Nivel" value={detalle.curso?.nivel} />
             <Field label="Letra" value={detalle.curso?.letra} />
             <Field label="Año" value={detalle.curso?.anio} />
+            <Field label="Profesor jefe" value={detalle.curso?.profesorJefeRut} />
           </InfoCard>
         </div>
       )}
-    </section>
+      </section>
+    </RoleGuard>
   )
 }
 
