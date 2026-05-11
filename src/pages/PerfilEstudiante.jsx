@@ -17,10 +17,28 @@ function PerfilEstudiante() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  function validarBusqueda() {
+    if (tipoBusqueda === 'rut' && !rut.trim()) {
+      return 'Debe ingresar el RUT del estudiante.'
+    }
+    if (tipoBusqueda === 'id' && (!estudianteId || Number(estudianteId) <= 0)) {
+      return 'Debe ingresar un ID de estudiante valido.'
+    }
+    return ''
+  }
+
   async function buscarPerfil(e) {
     e.preventDefault()
-    setLoading(true)
     setError('')
+
+    const validationError = validarBusqueda()
+    if (validationError) {
+      setPerfil(null)
+      setError(validationError)
+      return
+    }
+
+    setLoading(true)
 
     try {
       const data = tipoBusqueda === 'rut'

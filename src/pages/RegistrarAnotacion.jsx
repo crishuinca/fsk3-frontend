@@ -20,15 +20,41 @@ function RegistrarAnotacion() {
   const [resultado, setResultado] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }))
   }
 
+  function validarFormulario() {
+    if (!form.estudianteId || Number(form.estudianteId) <= 0) {
+      return 'Debe ingresar un ID de estudiante valido.'
+    }
+    if (!form.fecha) {
+      return 'Debe seleccionar una fecha.'
+    }
+    if (!form.registradaPor.trim()) {
+      return 'Debe ingresar el RUT de quien registra.'
+    }
+    if (!form.descripcion.trim()) {
+      return 'Debe ingresar una descripcion para la anotacion.'
+    }
+    return ''
+  }
+
   async function registrarAnotacion(e) {
     e.preventDefault()
-    setLoading(true)
     setError('')
+    setSuccess('')
+
+    const validationError = validarFormulario()
+    if (validationError) {
+      setResultado(null)
+      setError(validationError)
+      return
+    }
+
+    setLoading(true)
 
     try {
       const data = await createAnotacion({
@@ -36,6 +62,7 @@ function RegistrarAnotacion() {
         estudianteId: Number(form.estudianteId),
       })
       setResultado(data)
+      setSuccess('Anotacion registrada correctamente.')
       setForm((current) => ({ ...current, descripcion: '' }))
     } catch (ex) {
       setResultado(null)
@@ -109,6 +136,7 @@ function RegistrarAnotacion() {
 
         {loading && <Loading />}
         <ErrorMessage message={error} />
+        {success && <p className="state state-success">{success}</p>}
 
         {resultado && (
           <InfoCard title="Anotacion registrada">

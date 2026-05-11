@@ -20,15 +20,38 @@ function RegistrarAsistencia() {
   const [resultado, setResultado] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }))
   }
 
+  function validarFormulario() {
+    if (!form.estudianteId || Number(form.estudianteId) <= 0) {
+      return 'Debe ingresar un ID de estudiante valido.'
+    }
+    if (!form.fecha) {
+      return 'Debe seleccionar una fecha.'
+    }
+    if (!form.registradaPor.trim()) {
+      return 'Debe ingresar el RUT de quien registra.'
+    }
+    return ''
+  }
+
   async function registrarAsistencia(e) {
     e.preventDefault()
-    setLoading(true)
     setError('')
+    setSuccess('')
+
+    const validationError = validarFormulario()
+    if (validationError) {
+      setResultado(null)
+      setError(validationError)
+      return
+    }
+
+    setLoading(true)
 
     try {
       const data = await createAsistencia({
@@ -36,6 +59,7 @@ function RegistrarAsistencia() {
         estudianteId: Number(form.estudianteId),
       })
       setResultado(data)
+      setSuccess('Asistencia registrada correctamente.')
       setForm((current) => ({ ...current, observacion: '' }))
     } catch (ex) {
       setResultado(null)
@@ -110,6 +134,7 @@ function RegistrarAsistencia() {
 
         {loading && <Loading />}
         <ErrorMessage message={error} />
+        {success && <p className="state state-success">{success}</p>}
 
         {resultado && (
           <InfoCard title="Asistencia registrada">
