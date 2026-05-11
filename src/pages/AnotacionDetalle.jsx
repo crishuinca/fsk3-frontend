@@ -5,24 +5,28 @@ import Field from '../components/Field'
 import InfoCard from '../components/InfoCard'
 import Loading from '../components/Loading'
 import RoleGuard from '../components/RoleGuard'
-import { getAnotacionDetalle } from '../services/bffApi'
+import { getPerfilEstudiante, getPerfilEstudiantePorRut } from '../services/bffApi'
 
 function AnotacionDetalle() {
-  const [id, setId] = useState('1')
-  const [detalle, setDetalle] = useState(null)
+  const [tipoBusqueda, setTipoBusqueda] = useState('id')
+  const [estudianteId, setEstudianteId] = useState('1')
+  const [rut, setRut] = useState('')
+  const [perfil, setPerfil] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  async function buscarDetalle(e) {
+  async function buscarAnotaciones(e) {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     try {
-      const data = await getAnotacionDetalle(id)
-      setDetalle(data)
+      const data = tipoBusqueda === 'rut'
+        ? await getPerfilEstudiantePorRut(rut)
+        : await getPerfilEstudiante(estudianteId)
+      setPerfil(data)
     } catch (ex) {
-      setDetalle(null)
+      setPerfil(null)
       setError(ex.message)
     } finally {
       setLoading(false)
@@ -31,55 +35,90 @@ function AnotacionDetalle() {
 
   return (
     <RoleGuard
-      permission="canViewAnotacionDetalle"
+      permission="canViewAnotacion"
       fallback={
         <section className="page">
           <h1>Acceso restringido</h1>
-          <p>El rol seleccionado puede revisar anotaciones desde el perfil del estudiante, pero no accede a esta busqueda directa.</p>
+          <p>El rol seleccionado no puede consultar anotaciones.</p>
         </section>
       }
     >
       <section className="page">
-        <h1>Detalle de anotacion</h1>
-        <p>Consulta una anotacion y muestra los datos relacionados del estudiante y curso.</p>
+        <h1>Anotaciones del estudiante</h1>
+        <p>Busca un estudiante por ID o RUT y revisa todo el detalle de sus anotaciones.</p>
 
-      <form className="search-form" onSubmit={buscarDetalle}>
-        <label>
-          ID anotacion
-          <input value={id} onChange={(e) => setId(e.target.value)} />
-        </label>
-        <button type="submit">Buscar anotacion</button>
-      </form>
+        <form className="search-form" onSubmit={buscarAnotaciones}>
+          <label>
+            Buscar por
+            <select value={tipoBusqueda} onChange={(e) => setTipoBusqueda(e.target.value)}>
+              <option value="id">ID estudiante</option>
+              <option value="rut">RUT estudiante</option>
+            </select>
+          </label>
+          {tipoBusqueda === 'rut' ? (
+            <label>
+              RUT estudiante
+              <input
+                required
+                placeholder="Ej: 21827564-8"
+                value={rut}
+                onChange={(e) => setRut(e.target.value)}
+              />
+            </label>
+          ) : (
+            <label>
+              ID estudiante
+              <input
+                min="1"
+                required
+                type="number"
+                value={estudianteId}
+                onChange={(e) => setEstudianteId(e.target.value)}
+              />
+            </label>
+          )}
+          <button type="submit">Buscar anotaciones</button>
+        </form>
 
-      {loading && <Loading />}
-      <ErrorMessage message={error} />
+        {loading && <Loading />}
+        <ErrorMessage message={error} />
 
-      {detalle && (
-        <div className="grid">
-          <InfoCard title="Anotacion">
-            <Badge tone={detalle.anotacion?.tipo}>{detalle.anotacion?.tipo}</Badge>
-            <Field label="ID anotacion" value={detalle.anotacion?.id} />
-            <Field label="Fecha" value={detalle.anotacion?.fecha} />
-            <Field label="Descripcion" value={detalle.anotacion?.descripcion} />
-            <Field label="Registrada por" value={detalle.anotacion?.registradaPor} />
-          </InfoCard>
+        {perfil && (
+          <div className="grid">
+            <InfoCard title="Datos del estudiante">
+              <Field label="ID estudiante" value={perfil.estudiante?.id} />
+              <Field label="RUT" value={perfil.estudiante?.rut} />
+              <Field label="Nombre completo" value={`${perfil.estudiante?.nombres || ''} ${perfil.estudiante?.apellidoPaterno || ''} ${perfil.estudiante?.apellidoMaterno || ''}`} />
+              <Field label="Email" value={perfil.estudiante?.email} />
+            </InfoCard>
 
-          <InfoCard title="Datos del estudiante">
-            <Field label="ID estudiante" value={detalle.estudiante?.id} />
-            <Field label="RUT" value={detalle.estudiante?.rut} />
-            <Field label="Nombre completo" value={`${detalle.estudiante?.nombres || ''} ${detalle.estudiante?.apellidoPaterno || ''} ${detalle.estudiante?.apellidoMaterno || ''}`} />
-            <Field label="Email" value={detalle.estudiante?.email} />
-          </InfoCard>
+            <InfoCard title="Curso actual">
+              <Field label="ID curso" value={perfil.curso?.id} />
+              <Field label="Nivel" value={perfil.curso?.nivel} />
+              <Field label="Letra" value={perfil.curso?.letra} />
+              <Field label="Año" value={perfil.curso?.anio} />
+              <Field label="Profesor jefe" value={perfil.curso?.profesorJefeRut} />
+            </InfoCard>
 
-          <InfoCard title="Curso relacionado">
-            <Field label="ID curso" value={detalle.curso?.id} />
-            <Field label="Nivel" value={detalle.curso?.nivel} />
-            <Field label="Letra" value={detalle.curso?.letra} />
-            <Field label="Año" value={detalle.curso?.anio} />
-            <Field label="Profesor jefe" value={detalle.curso?.profesorJefeRut} />
-          </InfoCard>
-        </div>
-      )}
+            <InfoCard title={`Anotaciones registradas (${perfil.anotaciones?.length || 0})`}>
+              {perfil.anotaciones?.length ? (
+                <ul className="list">
+                  {perfil.anotaciones.map((item) => (
+                    <li key={item.id}>
+                      <Badge tone={item.tipo}>{item.tipo}</Badge>
+                      <Field label="ID anotacion" value={item.id} />
+                      <Field label="Fecha" value={item.fecha} />
+                      <Field label="Descripcion" value={item.descripcion} />
+                      <Field label="Registrada por" value={item.registradaPor} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Sin anotaciones registradas.</p>
+              )}
+            </InfoCard>
+          </div>
+        )}
       </section>
     </RoleGuard>
   )

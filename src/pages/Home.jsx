@@ -37,16 +37,16 @@ function Home() {
           </InfoCard>
         </RoleGuard>
 
-        <RoleGuard permission="canViewAnotacionDetalle">
-          <InfoCard title="Detalle de anotacion">
-            <p>Obtiene el detalle de una anotacion, incluyendo los datos del estudiante y su curso.</p>
-            <Link className="button" to="/anotacion">Ver anotacion</Link>
+        <RoleGuard permission="canViewAnotacion">
+          <InfoCard title="Anotaciones del estudiante">
+            <p>Busca un estudiante por ID o RUT y revisa el detalle de sus anotaciones.</p>
+            <Link className="button" to="/anotacion">Ver anotaciones</Link>
           </InfoCard>
         </RoleGuard>
 
-        <RoleGuard permission="canViewAsistenciaDetalle">
-          <InfoCard title="Detalle de asistencia">
-            <p>Obtiene el detalle de una asistencia, incluyendo los datos del estudiante y su curso.</p>
+        <RoleGuard permission="canViewAsistencia">
+          <InfoCard title="Asistencia del estudiante">
+            <p>Busca un estudiante por ID o RUT y revisa el detalle de su asistencia.</p>
             <Link className="button" to="/asistencia">Ver asistencia</Link>
           </InfoCard>
         </RoleGuard>
