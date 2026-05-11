@@ -6,6 +6,7 @@
   gap: 20px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 14px 28px;
   background: var(--primary);
   color: #fff;
@@ -23,8 +24,8 @@
 }
 
 .brand-logo {
-  width: 80px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   flex: 0 0 auto;
   object-fit: contain;
   padding: 3px;

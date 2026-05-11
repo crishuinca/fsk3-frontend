@@ -50,6 +50,20 @@ function Home() {
             <Link className="button" to="/asistencia">Ver asistencia</Link>
           </InfoCard>
         </RoleGuard>
+
+        <RoleGuard permission="canCreateAnotacion">
+          <InfoCard title="Registrar anotacion">
+            <p>Permite registrar una anotacion positiva o negativa para un estudiante.</p>
+            <Link className="button" to="/registrar-anotacion">Registrar anotacion</Link>
+          </InfoCard>
+        </RoleGuard>
+
+        <RoleGuard permission="canCreateAsistencia">
+          <InfoCard title="Registrar asistencia">
+            <p>Permite registrar asistencia, atraso, ausencia o justificacion diaria.</p>
+            <Link className="button" to="/registrar-asistencia">Registrar asistencia</Link>
+          </InfoCard>
+        </RoleGuard>
       </div>
 
     </section>

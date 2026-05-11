@@ -69,4 +69,6 @@ export const navItems = [
   { to: '/perfil', label: 'Perfil estudiante', permission: 'canViewPerfil' },
   { to: '/anotacion', label: 'Anotacion', permission: 'canViewAnotacionDetalle' },
   { to: '/asistencia', label: 'Asistencia', permission: 'canViewAsistenciaDetalle' },
+  { to: '/registrar-anotacion', label: 'Registrar anotacion', permission: 'canCreateAnotacion' },
+  { to: '/registrar-asistencia', label: 'Registrar asistencia', permission: 'canCreateAsistencia' },
 ]

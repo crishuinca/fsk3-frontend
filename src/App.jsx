@@ -5,6 +5,8 @@ import AnotacionDetalle from './pages/AnotacionDetalle'
 import AsistenciaDetalle from './pages/AsistenciaDetalle'
 import Home from './pages/Home'
 import PerfilEstudiante from './pages/PerfilEstudiante'
+import RegistrarAnotacion from './pages/RegistrarAnotacion'
+import RegistrarAsistencia from './pages/RegistrarAsistencia'
 import './styles/global.css'
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
             <Route path="/perfil" element={<PerfilEstudiante />} />
             <Route path="/anotacion" element={<AnotacionDetalle />} />
             <Route path="/asistencia" element={<AsistenciaDetalle />} />
+            <Route path="/registrar-anotacion" element={<RegistrarAnotacion />} />
+            <Route path="/registrar-asistencia" element={<RegistrarAsistencia />} />
           </Routes>
         </main>
       </BrowserRouter>
