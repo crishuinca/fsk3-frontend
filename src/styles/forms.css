@@ -1,5 +1,6 @@
 .button,
-.search-form button {
+.search-form button,
+.data-form button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15,11 +16,13 @@
 }
 
 .button:hover,
-.search-form button:hover {
+.search-form button:hover,
+.data-form button:hover {
   filter: brightness(1.08);
 }
 
-.search-form {
+.search-form,
+.data-form {
   display: flex;
   gap: 14px;
   align-items: flex-end;
@@ -30,7 +33,14 @@
   background: #fff;
 }
 
-.search-form label {
+.data-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  align-items: start;
+}
+
+.search-form label,
+.data-form label {
   display: grid;
   gap: 6px;
   min-width: 160px;
@@ -38,8 +48,21 @@
   font-weight: 700;
 }
 
-.search-form input {
+.search-form input,
+.search-form select,
+.data-form input,
+.data-form select,
+.data-form textarea {
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
+  font: inherit;
+}
+
+.data-form textarea {
+  resize: vertical;
+}
+
+.form-full {
+  grid-column: 1 / -1;
 }

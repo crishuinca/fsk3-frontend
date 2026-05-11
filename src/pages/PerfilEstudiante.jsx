@@ -6,12 +6,13 @@ import InfoCard from '../components/InfoCard'
 import Loading from '../components/Loading'
 import RoleGuard from '../components/RoleGuard'
 import { useRole } from '../hooks/useRole'
-import { getPerfilEstudiante } from '../services/bffApi'
+import { getPerfilEstudiante, getPerfilEstudiantePorRut } from '../services/bffApi'
 
 function PerfilEstudiante() {
   const { currentRole } = useRole()
+  const [tipoBusqueda, setTipoBusqueda] = useState('id')
   const [estudianteId, setEstudianteId] = useState('1')
-  const [cursoId, setCursoId] = useState('1')
+  const [rut, setRut] = useState('')
   const [perfil, setPerfil] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -22,7 +23,9 @@ function PerfilEstudiante() {
     setError('')
 
     try {
-      const data = await getPerfilEstudiante(estudianteId, cursoId)
+      const data = tipoBusqueda === 'rut'
+        ? await getPerfilEstudiantePorRut(rut)
+        : await getPerfilEstudiante(estudianteId)
       setPerfil(data)
     } catch (ex) {
       setPerfil(null)
@@ -39,13 +42,34 @@ function PerfilEstudiante() {
 
       <form className="search-form" onSubmit={buscarPerfil}>
         <label>
-          ID estudiante
-          <input value={estudianteId} onChange={(e) => setEstudianteId(e.target.value)} />
+          Buscar por
+          <select value={tipoBusqueda} onChange={(e) => setTipoBusqueda(e.target.value)}>
+            <option value="id">ID estudiante</option>
+            <option value="rut">RUT estudiante</option>
+          </select>
         </label>
-        <label>
-          ID curso
-          <input value={cursoId} onChange={(e) => setCursoId(e.target.value)} />
-        </label>
+        {tipoBusqueda === 'rut' ? (
+          <label>
+            RUT estudiante
+            <input
+              required
+              placeholder="Ej: 12345678-9"
+              value={rut}
+              onChange={(e) => setRut(e.target.value)}
+            />
+          </label>
+        ) : (
+          <label>
+            ID estudiante
+            <input
+              min="1"
+              required
+              type="number"
+              value={estudianteId}
+              onChange={(e) => setEstudianteId(e.target.value)}
+            />
+          </label>
+        )}
         <button type="submit">Buscar perfil</button>
       </form>
 
