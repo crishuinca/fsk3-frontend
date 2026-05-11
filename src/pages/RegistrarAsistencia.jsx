@@ -11,7 +11,6 @@ const today = new Date().toISOString().slice(0, 10)
 
 function RegistrarAsistencia() {
   const [form, setForm] = useState({
-    cursoId: '1',
     estudianteId: '1',
     fecha: today,
     estado: 'PRESENTE',
@@ -34,7 +33,6 @@ function RegistrarAsistencia() {
     try {
       const data = await createAsistencia({
         ...form,
-        cursoId: Number(form.cursoId),
         estudianteId: Number(form.estudianteId),
       })
       setResultado(data)
@@ -62,16 +60,6 @@ function RegistrarAsistencia() {
         <p>Formulario para que profesor o inspector registren la asistencia diaria de un estudiante.</p>
 
         <form className="data-form" onSubmit={registrarAsistencia}>
-          <label>
-            ID curso
-            <input
-              min="1"
-              required
-              type="number"
-              value={form.cursoId}
-              onChange={(e) => updateField('cursoId', e.target.value)}
-            />
-          </label>
           <label>
             ID estudiante
             <input

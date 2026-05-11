@@ -11,7 +11,6 @@ const today = new Date().toISOString().slice(0, 10)
 
 function RegistrarAnotacion() {
   const [form, setForm] = useState({
-    cursoId: '1',
     estudianteId: '1',
     fecha: today,
     tipo: 'POSITIVA',
@@ -34,7 +33,6 @@ function RegistrarAnotacion() {
     try {
       const data = await createAnotacion({
         ...form,
-        cursoId: Number(form.cursoId),
         estudianteId: Number(form.estudianteId),
       })
       setResultado(data)
@@ -62,16 +60,6 @@ function RegistrarAnotacion() {
         <p>Formulario para que el profesor registre una anotacion positiva o negativa.</p>
 
         <form className="data-form" onSubmit={registrarAnotacion}>
-          <label>
-            ID curso
-            <input
-              min="1"
-              required
-              type="number"
-              value={form.cursoId}
-              onChange={(e) => updateField('cursoId', e.target.value)}
-            />
-          </label>
           <label>
             ID estudiante
             <input
