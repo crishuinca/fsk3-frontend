@@ -1,0 +1,26 @@
+.state {
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.state-loading {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.state-error {
+  background: #fdecea;
+  color: var(--danger);
+}
+
+.api-note {
+  color: var(--muted);
+}
+
+.api-note code {
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}

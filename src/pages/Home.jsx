@@ -9,29 +9,28 @@ function Home() {
         <p className="eyebrow">Colegio Bernardo O'Higgins</p>
         <h1>Plataforma de libro de clases digital</h1>
         <p>
-          Frontend en React que consume solamente el BFF. El BFF se encarga de
-          consultar los microservicios de academico y asistencia.
+          Bienvenido al sistema de libro de clases digital del Colegio Bernardo O'Higgins.
         </p>
       </div>
 
       <div className="grid">
         <InfoCard title="Perfil del estudiante">
-          <p>Consulta estudiante, curso, anotaciones y asistencias en una sola vista.</p>
+          <p>Obtiene el perfil completo del estudiante, incluyendo sus datos, curso, anotaciones y asistencias.</p>
           <Link className="button" to="/perfil">Ver perfil</Link>
         </InfoCard>
 
         <InfoCard title="Detalle de anotacion">
-          <p>Obtiene una anotacion junto con los datos del estudiante y su curso.</p>
+          <p>Obtiene el detalle de una anotacion, incluyendo los datos del estudiante y su curso.</p>
           <Link className="button" to="/anotacion">Ver anotacion</Link>
         </InfoCard>
 
         <InfoCard title="Detalle de asistencia">
-          <p>Obtiene una asistencia junto con los datos del estudiante y su curso.</p>
+          <p>Obtiene el detalle de una asistencia, incluyendo los datos del estudiante y su curso.</p>
           <Link className="button" to="/asistencia">Ver asistencia</Link>
         </InfoCard>
       </div>
 
-      <p className="api-note">Base URL actual del BFF: <code>{API_URL}</code></p>
+      
     </section>
   )
 }

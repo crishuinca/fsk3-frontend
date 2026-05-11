@@ -1,0 +1,45 @@
+.button,
+.search-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.button:hover,
+.search-form button:hover {
+  filter: brightness(1.08);
+}
+
+.search-form {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.search-form label {
+  display: grid;
+  gap: 6px;
+  min-width: 160px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.search-form input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
