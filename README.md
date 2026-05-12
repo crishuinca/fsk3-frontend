@@ -144,6 +144,32 @@ Estado actual:
 - Cobertura global aproximada: 77% por líneas.
 - Umbral mínimo configurado: 60% en líneas, statements, branches y functions.
 
+## CI/CD y SonarQube
+
+El repositorio incluye un pipeline de GitHub Actions en:
+
+```text
+.github/workflows/ci-sonar.yml
+```
+
+El pipeline ejecuta:
+
+- `npm ci`
+- `npm run lint`
+- `npm run test:coverage`
+- `npm run build`
+- `npm run build:lib`
+- `npm pack --dry-run`
+- Reporte de coverage como artefacto.
+- Análisis SonarQube/SonarCloud si existen las variables y secretos necesarios.
+
+Para activar Sonar en GitHub se debe configurar:
+
+- Secret: `SONAR_TOKEN`
+- Variable: `SONAR_ORGANIZATION`
+- Variable opcional: `SONAR_PROJECT_KEY`
+- Variable opcional: `SONAR_HOST_URL` si se usa SonarQube propio en vez de SonarCloud.
+
 ## Lint
 
 Ejecutar revisión de ESLint:
