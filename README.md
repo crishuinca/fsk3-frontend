@@ -71,6 +71,53 @@ Vista previa del build:
 npm run preview
 ```
 
+## Empaquetado NPM
+
+El proyecto también está preparado para generar un paquete NPM reutilizable como librería React.
+
+Build de librería:
+
+```powershell
+npm run build:lib
+```
+
+Generar paquete local:
+
+```powershell
+npm pack
+```
+
+El comando genera un archivo como:
+
+```text
+frontend-libroclases-1.0.0.tgz
+```
+
+Verificar publicación sin subir a npm:
+
+```powershell
+npm publish --dry-run
+```
+
+Exports principales del paquete:
+
+- `LibroClasesApp`
+- Componentes: `Navbar`, `RoleGuard`, `RoleSelector`, `InfoCard`, `Badge`, `Field`
+- Contexto y hook: `RoleProvider`, `useRole`, `roles`, `permissionsByRole`
+- Páginas: `Home`, `PerfilEstudiante`, `AnotacionDetalle`, `AsistenciaDetalle`, `RegistrarAnotacion`, `RegistrarAsistencia`
+- Cliente BFF: `getPerfilEstudiante`, `getPerfilEstudiantePorRut`, `createAnotacion`, `createAsistencia`
+
+Ejemplo de uso en otro proyecto React:
+
+```jsx
+import { LibroClasesApp } from 'frontend-libroclases'
+import 'frontend-libroclases/style.css'
+
+function App() {
+  return <LibroClasesApp />
+}
+```
+
 ## Tests y cobertura
 
 Ejecutar tests:
