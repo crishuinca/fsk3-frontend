@@ -1,0 +1,94 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 14px 28px;
+  background: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+}
+
+.brand-logo {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  padding: 3px;
+  border-radius: 12px;
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.88;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.16);
+  opacity: 1;
+}
+
+.role-selector {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.role-selector select {
+  min-width: 128px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--primary);
+}
+
+.role-box {
+  display: grid;
+  gap: 4px;
+  max-width: 280px;
+}
+
+.role-box small {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+  }
+}
