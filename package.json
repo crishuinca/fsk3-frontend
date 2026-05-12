@@ -1,15 +1,36 @@
 {
   "name": "frontend-libroclases",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "description": "Componentes React para la plataforma de libro de clases digital del Colegio Bernardo OHiggins",
   "type": "module",
+  "main": "./dist-lib/frontend-libroclases.umd.cjs",
+  "module": "./dist-lib/frontend-libroclases.js",
+  "exports": {
+    ".": {
+      "import": "./dist-lib/frontend-libroclases.js",
+      "require": "./dist-lib/frontend-libroclases.umd.cjs"
+    },
+    "./style.css": "./dist-lib/frontend-libroclases.css"
+  },
+  "files": [
+    "dist-lib",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "vite build --config vite.lib.config.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "prepack": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.15.0"
   },
   "dependencies": {
     "react": "^19.2.5",
