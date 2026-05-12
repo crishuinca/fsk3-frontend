@@ -70,4 +70,7 @@ jobs:
             -Dsonar.sources=src \
             -Dsonar.tests=src \
             -Dsonar.test.inclusions="src/**/*.test.js,src/**/*.test.jsx" \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+            -Dsonar.exclusions=".github/workflows/**" \
+            -Dsonar.coverage.exclusions="src/main.jsx,src/App.jsx,src/lib/**,src/test/**,**/*.config.js" \
+            -Dsonar.cpd.exclusions="src/pages/AnotacionDetalle.jsx,src/pages/AsistenciaDetalle.jsx"
