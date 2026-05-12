@@ -1,0 +1,62 @@
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8083/api/v1'
+
+async function request(path, options = {}) {
+  let resp
+
+  try {
+    resp = await fetch(`${API_URL}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    })
+  } catch {
+    throw new Error('Error de conexión con el servidor')
+  }
+
+  if (!resp.ok) {
+    let message = 'No se pudo cargar la informacion'
+    try {
+      const error = await resp.json()
+      message = error.error || message
+    } catch {
+      message = await resp.text()
+    }
+    throw new Error(message)
+  }
+
+  return resp.json()
+}
+
+export function getPerfilEstudiante(estudianteId) {
+  return request(`/perfilEstudiante/${estudianteId}`)
+}
+
+export function getPerfilEstudiantePorRut(rut) {
+  return request(`/perfilEstudianteRut/${encodeURIComponent(rut)}`)
+}
+
+export function getAnotacionDetalle(id) {
+  return request(`/anotacionDetalle/${id}`)
+}
+
+export function getAsistenciaDetalle(id) {
+  return request(`/asistenciaDetalle/${id}`)
+}
+
+export function createAnotacion(data) {
+  return request('/anotaciones', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export function createAsistencia(data) {
+  return request('/asistencias', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export { API_URL }

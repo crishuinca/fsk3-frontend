@@ -1,0 +1,151 @@
+.hero-panel,
+.info-card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.info-card {
+  padding: 22px;
+}
+
+.info-card h3 {
+  margin: 0 0 12px;
+  color: var(--primary);
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 12px;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field strong {
+  color: var(--text);
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+  margin: 0;
+}
+
+.list li {
+  display: grid;
+  gap: 4px;
+}
+
+.list small {
+  color: var(--muted);
+}
+
+.role-summary {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--accent);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.role-summary span,
+.metric-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.role-summary strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--primary);
+  font-size: 24px;
+}
+
+.role-summary p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.role-summary ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.summary-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+}
+
+.metric-row div {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--primary-soft);
+}
+
+.metric-row strong {
+  display: block;
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.badge-positiva,
+.badge-presente {
+  background: #eafaf1;
+  color: #1e8449;
+}
+
+.badge-negativa,
+.badge-ausente {
+  background: #fdecea;
+  color: #b03a2e;
+}
+
+.badge-atrasado {
+  background: #fff4d6;
+  color: #946200;
+}
+
+.badge-justificado {
+  background: #e8f1ff;
+  color: #1f5fa8;
+}
+
+@media (max-width: 760px) {
+  .role-summary {
+    grid-template-columns: 1fr;
+  }
+}
