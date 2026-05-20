@@ -82,6 +82,38 @@
   line-height: 1.25;
 }
 
+.user-panel {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+  text-align: right;
+}
+
+.user-panel span,
+.user-panel small {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+}
+
+.user-panel strong {
+  color: #fff;
+}
+
+.logout-button {
+  margin-top: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
 @media (max-width: 760px) {
   .navbar {
     align-items: flex-start;
