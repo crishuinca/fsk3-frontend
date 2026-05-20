@@ -6,6 +6,7 @@ import InfoCard from '../components/InfoCard'
 import Loading from '../components/Loading'
 import RoleGuard from '../components/RoleGuard'
 import { createAsistencia } from '../services/bffApi'
+import { verificarEstudianteExiste } from '../utils/validarEstudiante'
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -51,6 +52,13 @@ function RegistrarAsistencia() {
       return
     }
 
+    const estudianteError = await verificarEstudianteExiste(Number(form.estudianteId))
+    if (estudianteError) {
+      setResultado(null)
+      setError(estudianteError)
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -81,7 +89,10 @@ function RegistrarAsistencia() {
     >
       <section className="page">
         <h1>Registrar asistencia</h1>
-        <p>Formulario para que profesor o inspector registren la asistencia diaria de un estudiante.</p>
+        <p>
+          Formulario para que profesor o inspector registren la asistencia. El ID debe corresponder
+          a un estudiante creado en el sistema academico (por ejemplo ID 1).
+        </p>
 
         <form className="data-form" onSubmit={registrarAsistencia}>
           <label>

@@ -17,6 +17,16 @@ const apiMocks = vi.hoisted(() => ({
 
 vi.mock('../services/bffApi', () => apiMocks)
 
+vi.mock('../services/authApi', () => ({
+  getCurrentUser: vi.fn((token) => {
+    const raw = localStorage.getItem('authUser')
+    return Promise.resolve(raw ? JSON.parse(raw) : null)
+  }),
+  login: vi.fn(),
+  createUser: vi.fn(),
+  listUsers: vi.fn(),
+}))
+
 const perfilDemo = {
   estudiante: {
     id: 1,
