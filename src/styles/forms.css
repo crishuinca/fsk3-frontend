@@ -66,3 +66,23 @@
 .form-full {
   grid-column: 1 / -1;
 }
+
+.estudiante-id-panel,
+.alumno-panel {
+  padding: 18px;
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.estudiante-id-panel h2,
+.alumno-panel h2 {
+  margin: 6px 0;
+  color: var(--primary);
+}
+
+.estudiante-id-panel p,
+.alumno-panel p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
