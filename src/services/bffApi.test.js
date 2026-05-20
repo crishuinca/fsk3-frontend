@@ -3,6 +3,8 @@ import {
   API_URL,
   createAnotacion,
   createAsistencia,
+  getAnotacionDetalle,
+  getAsistenciaDetalle,
   getPerfilEstudiante,
   getPerfilEstudiantePorRut,
 } from './bffApi'
@@ -76,5 +78,49 @@ describe('bffApi', () => {
     }))
 
     await expect(getPerfilEstudiante(999)).rejects.toThrow('Estudiante no encontrado')
+  })
+
+  it('envia token de autorizacion si existe en localStorage', async () => {
+    localStorage.setItem('authToken', 'jwt-test')
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ id: 1 }),
+    }))
+
+    await getAnotacionDetalle(1)
+
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/anotacionDetalle/1`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer jwt-test',
+      },
+    })
+    localStorage.clear()
+  })
+
+  it('consulta detalle de asistencia', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ asistencia: { id: 2 } }),
+    }))
+
+    const detalle = await getAsistenciaDetalle(2)
+
+    expect(detalle.asistencia.id).toBe(2)
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/asistenciaDetalle/2`, {
+      headers: { 'Content-Type': 'application/json' },
+    })
+  })
+
+  it('usa texto plano si la respuesta de error no es JSON', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => {
+        throw new Error('not json')
+      },
+      text: async () => 'Servicio no disponible',
+    }))
+
+    await expect(getPerfilEstudiante(1)).rejects.toThrow('Servicio no disponible')
   })
 })

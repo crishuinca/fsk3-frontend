@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import Navbar from './Navbar'
@@ -58,5 +58,14 @@ describe('roles y permisos', () => {
     renderRole(<Navbar />, 'INSPECTOR')
 
     expect(screen.getByText('Crear usuario')).toBeInTheDocument()
+  })
+
+  it('Navbar cierra sesion y limpia almacenamiento', () => {
+    renderRole(<Navbar />, 'PROFESOR')
+
+    fireEvent.click(screen.getByRole('button', { name: /cerrar sesion/i }))
+
+    expect(localStorage.getItem('authToken')).toBeNull()
+    expect(localStorage.getItem('authUser')).toBeNull()
   })
 })
