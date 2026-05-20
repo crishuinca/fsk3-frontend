@@ -1,55 +1,12 @@
-import { useState } from 'react'
 import Badge from '../components/Badge'
-import ErrorMessage from '../components/ErrorMessage'
+import BusquedaPerfilForm from '../components/BusquedaPerfilForm'
 import Field from '../components/Field'
 import InfoCard from '../components/InfoCard'
-import Loading from '../components/Loading'
 import RoleGuard from '../components/RoleGuard'
-import { getPerfilEstudiante, getPerfilEstudiantePorRut } from '../services/bffApi'
+import { usePerfilEstudianteBusqueda } from '../hooks/usePerfilEstudianteBusqueda'
 
 function AsistenciaDetalle() {
-  const [tipoBusqueda, setTipoBusqueda] = useState('id')
-  const [estudianteId, setEstudianteId] = useState('1')
-  const [rut, setRut] = useState('')
-  const [perfil, setPerfil] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  function validarBusqueda() {
-    if (tipoBusqueda === 'rut' && !rut.trim()) {
-      return 'Debe ingresar el RUT del estudiante.'
-    }
-    if (tipoBusqueda === 'id' && (!estudianteId || Number(estudianteId) <= 0)) {
-      return 'Debe ingresar un ID de estudiante valido.'
-    }
-    return ''
-  }
-
-  async function buscarAsistencias(e) {
-    e.preventDefault()
-    setError('')
-
-    const validationError = validarBusqueda()
-    if (validationError) {
-      setPerfil(null)
-      setError(validationError)
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      const data = tipoBusqueda === 'rut'
-        ? await getPerfilEstudiantePorRut(rut)
-        : await getPerfilEstudiante(estudianteId)
-      setPerfil(data)
-    } catch (ex) {
-      setPerfil(null)
-      setError(ex.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const busqueda = usePerfilEstudianteBusqueda()
 
   return (
     <RoleGuard
@@ -63,65 +20,35 @@ function AsistenciaDetalle() {
     >
       <section className="page">
         <h1>Asistencia del estudiante</h1>
-        <p>Busca un estudiante por ID o RUT y revisa todo el detalle de su asistencia.</p>
 
-        <form className="search-form" onSubmit={buscarAsistencias}>
-          <label>
-            Buscar por
-            <select value={tipoBusqueda} onChange={(e) => setTipoBusqueda(e.target.value)}>
-              <option value="id">ID estudiante</option>
-              <option value="rut">RUT estudiante</option>
-            </select>
-          </label>
-          {tipoBusqueda === 'rut' ? (
-            <label>
-              RUT estudiante
-              <input
-                required
-                placeholder="Ej: 21827564-8"
-                value={rut}
-                onChange={(e) => setRut(e.target.value)}
-              />
-            </label>
-          ) : (
-            <label>
-              ID estudiante
-              <input
-                min="1"
-                required
-                type="number"
-                value={estudianteId}
-                onChange={(e) => setEstudianteId(e.target.value)}
-              />
-            </label>
-          )}
-          <button type="submit">Buscar asistencia</button>
-        </form>
+        <BusquedaPerfilForm
+          descripcion="Busca un estudiante por ID o RUT y revisa todo el detalle de su asistencia."
+          botonLabel="Buscar asistencia"
+          onSubmit={busqueda.buscarPerfil}
+          {...busqueda}
+        />
 
-        {loading && <Loading />}
-        <ErrorMessage message={error} />
-
-        {perfil && (
+        {busqueda.perfil && (
           <div className="grid">
             <InfoCard title="Datos del estudiante">
-              <Field label="ID estudiante" value={perfil.estudiante?.id} />
-              <Field label="RUT" value={perfil.estudiante?.rut} />
-              <Field label="Nombre completo" value={`${perfil.estudiante?.nombres || ''} ${perfil.estudiante?.apellidoPaterno || ''} ${perfil.estudiante?.apellidoMaterno || ''}`} />
-              <Field label="Email" value={perfil.estudiante?.email} />
+              <Field label="ID estudiante" value={busqueda.perfil.estudiante?.id} />
+              <Field label="RUT" value={busqueda.perfil.estudiante?.rut} />
+              <Field label="Nombre completo" value={`${busqueda.perfil.estudiante?.nombres || ''} ${busqueda.perfil.estudiante?.apellidoPaterno || ''} ${busqueda.perfil.estudiante?.apellidoMaterno || ''}`} />
+              <Field label="Email" value={busqueda.perfil.estudiante?.email} />
             </InfoCard>
 
             <InfoCard title="Curso actual">
-              <Field label="ID curso" value={perfil.curso?.id} />
-              <Field label="Nivel" value={perfil.curso?.nivel} />
-              <Field label="Letra" value={perfil.curso?.letra} />
-              <Field label="Año" value={perfil.curso?.anio} />
-              <Field label="Profesor jefe" value={perfil.curso?.profesorJefeRut} />
+              <Field label="ID curso" value={busqueda.perfil.curso?.id} />
+              <Field label="Nivel" value={busqueda.perfil.curso?.nivel} />
+              <Field label="Letra" value={busqueda.perfil.curso?.letra} />
+              <Field label="Año" value={busqueda.perfil.curso?.anio} />
+              <Field label="Profesor jefe" value={busqueda.perfil.curso?.profesorJefeRut} />
             </InfoCard>
 
-            <InfoCard title={`Asistencias registradas (${perfil.asistencias?.length || 0})`}>
-              {perfil.asistencias?.length ? (
+            <InfoCard title={`Asistencias registradas (${busqueda.perfil.asistencias?.length || 0})`}>
+              {busqueda.perfil.asistencias?.length ? (
                 <ul className="list">
-                  {perfil.asistencias.map((item) => (
+                  {busqueda.perfil.asistencias.map((item) => (
                     <li key={item.id}>
                       <Badge tone={item.estado}>{item.estado}</Badge>
                       <Field label="ID asistencia" value={item.id} />

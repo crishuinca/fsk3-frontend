@@ -1,15 +1,26 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8083/api/v1'
 
+function getAuthToken() {
+  return localStorage.getItem('authToken')
+}
+
 async function request(path, options = {}) {
+  const token = getAuthToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  }
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
   let resp
 
   try {
     resp = await fetch(`${API_URL}${path}`, {
       ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
     })
   } catch {
     throw new Error('Error de conexión con el servidor')

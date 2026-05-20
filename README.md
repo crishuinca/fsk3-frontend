@@ -142,7 +142,7 @@ Estado actual:
 
 - 18 tests.
 - Cobertura global aproximada: 77% por líneas.
-- Umbral mínimo configurado: 60% en líneas, statements, branches y functions.
+- Umbral mínimo configurado: 80% en líneas, statements y functions; 74% en branches.
 
 ## CI/CD y SonarQube
 
