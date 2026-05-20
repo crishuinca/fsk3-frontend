@@ -1,8 +1,7 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getCurrentUser, login as loginRequest } from '../services/authApi'
+import { AuthContext } from './authStore'
 import { permissionsByRole, RoleContext, roles } from './roleStore'
-
-export const AuthContext = createContext()
 
 const TOKEN_KEY = 'authToken'
 const USER_KEY = 'authUser'
@@ -13,12 +12,15 @@ export function AuthProvider({ children }) {
     const raw = localStorage.getItem(USER_KEY)
     return raw ? JSON.parse(raw) : null
   })
-  const [loading, setLoading] = useState(Boolean(localStorage.getItem(TOKEN_KEY)))
+  const [loading, setLoading] = useState(() => Boolean(localStorage.getItem(TOKEN_KEY)))
 
   const rol = user?.rol || null
   const currentRole = roles.find((item) => item.id === rol) || roles[0]
-  const permissions = permissionsByRole[rol] || {}
-  const hasPermission = (permission) => !permission || Boolean(permissions[permission])
+  const permissions = useMemo(() => permissionsByRole[rol] || {}, [rol])
+  const hasPermission = useCallback(
+    (permission) => !permission || Boolean(permissions[permission]),
+    [permissions],
+  )
 
   const persistSession = useCallback((nextToken, nextUser) => {
     setToken(nextToken)
@@ -31,24 +33,24 @@ export function AuthProvider({ children }) {
   const clearSession = useCallback(() => {
     setToken(null)
     setUser(null)
+    setLoading(false)
     localStorage.removeItem(TOKEN_KEY)
     localStorage.removeItem(USER_KEY)
     localStorage.removeItem('rolActual')
   }, [])
 
-  const login = async (identificador, password) => {
+  const login = useCallback(async (identificador, password) => {
     const response = await loginRequest(identificador, password)
     persistSession(response.token, response.usuario)
     return response
-  }
+  }, [persistSession])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     clearSession()
-  }
+  }, [clearSession])
 
   useEffect(() => {
     if (!token) {
-      setLoading(false)
       return
     }
 
@@ -80,7 +82,7 @@ export function AuthProvider({ children }) {
 
   const roleValue = useMemo(
     () => ({ rol, setRol: () => {}, roles, currentRole, permissions, hasPermission }),
-    [rol, currentRole, permissions],
+    [rol, currentRole, permissions, hasPermission],
   )
 
   const authValue = useMemo(
@@ -92,7 +94,7 @@ export function AuthProvider({ children }) {
       login,
       logout,
     }),
-    [token, user, loading],
+    [token, user, loading, login, logout],
   )
 
   return (

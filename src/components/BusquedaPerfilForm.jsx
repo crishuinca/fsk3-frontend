@@ -2,7 +2,6 @@ import ErrorMessage from './ErrorMessage'
 import Loading from './Loading'
 
 function BusquedaPerfilForm({
-  titulo,
   descripcion,
   esAlumno,
   estudianteIdVinculado,

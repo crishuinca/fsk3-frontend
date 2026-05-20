@@ -14,6 +14,11 @@ export function usePerfilEstudianteBusqueda() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const errorVinculoAlumno =
+    !authLoading && esAlumno && !estudianteIdVinculado
+      ? 'Su usuario alumno no tiene ID de estudiante vinculado. Cierre sesion y vuelva a entrar.'
+      : ''
+
   const cargarPerfil = useCallback(async (idEstudiante) => {
     setLoading(true)
     setError('')
@@ -29,17 +34,14 @@ export function usePerfilEstudianteBusqueda() {
   }, [])
 
   useEffect(() => {
-    if (authLoading || !esAlumno) {
+    if (authLoading || !esAlumno || !estudianteIdVinculado) {
       return
     }
 
-    if (!estudianteIdVinculado) {
-      setError('Su usuario alumno no tiene ID de estudiante vinculado. Cierre sesion y vuelva a entrar.')
-      setPerfil(null)
-      return
-    }
-
-    cargarPerfil(estudianteIdVinculado)
+    const id = estudianteIdVinculado
+    queueMicrotask(() => {
+      cargarPerfil(id)
+    })
   }, [authLoading, esAlumno, estudianteIdVinculado, cargarPerfil])
 
   function validarBusqueda() {
@@ -94,9 +96,9 @@ export function usePerfilEstudianteBusqueda() {
     setEstudianteId,
     rut,
     setRut,
-    perfil,
+    perfil: errorVinculoAlumno ? null : perfil,
     loading,
-    error,
+    error: errorVinculoAlumno || error,
     buscarPerfil,
     authLoading,
   }
