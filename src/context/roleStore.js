@@ -4,6 +4,11 @@ export const RoleContext = createContext()
 
 export const roles = [
   {
+    id: 'ADMIN',
+    label: 'Administrador',
+    description: 'Administra usuarios y tiene acceso completo a la plataforma.',
+  },
+  {
     id: 'PROFESOR',
     label: 'Profesor',
     description: 'Puede revisar informacion del estudiante y registrar situaciones academicas.',
@@ -11,7 +16,7 @@ export const roles = [
   {
     id: 'INSPECTOR',
     label: 'Inspector',
-    description: 'Se enfoca en asistencia, atrasos y seguimiento de convivencia.',
+    description: 'Gestiona usuarios, asistencia, atrasos y seguimiento de convivencia.',
   },
   {
     id: 'APODERADO',
@@ -26,6 +31,15 @@ export const roles = [
 ]
 
 export const permissionsByRole = {
+  ADMIN: {
+    canViewPerfil: true,
+    canViewAnotacion: true,
+    canViewAsistencia: true,
+    canViewAnotacionDetalle: true,
+    canViewAsistenciaDetalle: true,
+    canCreateAnotacion: true,
+    canCreateAsistencia: true,
+  },
   PROFESOR: {
     canViewPerfil: true,
     canViewAnotacion: true,
@@ -43,6 +57,7 @@ export const permissionsByRole = {
     canViewAsistenciaDetalle: true,
     canCreateAnotacion: false,
     canCreateAsistencia: true,
+    canCreateUsers: true,
   },
   APODERADO: {
     canViewPerfil: true,
@@ -71,4 +86,5 @@ export const navItems = [
   { to: '/asistencia', label: 'Asistencia del estudiante', permission: 'canViewAsistencia' },
   { to: '/registrar-anotacion', label: 'Registrar anotacion', permission: 'canCreateAnotacion' },
   { to: '/registrar-asistencia', label: 'Registrar asistencia', permission: 'canCreateAsistencia' },
+  { to: '/crear-usuario', label: 'Crear usuario', permission: 'canCreateUsers' },
 ]

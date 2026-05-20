@@ -19,6 +19,15 @@
   color: #1e8449;
 }
 
+.success-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #eafaf1;
+  color: #1e8449;
+  font-weight: 700;
+}
+
 .api-note {
   color: var(--muted);
 }

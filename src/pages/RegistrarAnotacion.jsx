@@ -6,6 +6,7 @@ import InfoCard from '../components/InfoCard'
 import Loading from '../components/Loading'
 import RoleGuard from '../components/RoleGuard'
 import { createAnotacion } from '../services/bffApi'
+import { verificarEstudianteExiste } from '../utils/validarEstudiante'
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -54,6 +55,13 @@ function RegistrarAnotacion() {
       return
     }
 
+    const estudianteError = await verificarEstudianteExiste(Number(form.estudianteId))
+    if (estudianteError) {
+      setResultado(null)
+      setError(estudianteError)
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -84,7 +92,10 @@ function RegistrarAnotacion() {
     >
       <section className="page">
         <h1>Registrar anotacion</h1>
-        <p>Formulario para que el profesor registre una anotacion positiva o negativa.</p>
+        <p>
+          Formulario para que el profesor registre una anotacion. El ID debe corresponder a un
+          estudiante creado en el sistema academico (por ejemplo ID 1).
+        </p>
 
         <form className="data-form" onSubmit={registrarAnotacion}>
           <label>

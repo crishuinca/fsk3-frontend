@@ -1,11 +1,18 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { navItems } from '../context/roleStore'
+import { useAuth } from '../hooks/useAuth'
 import { useRole } from '../hooks/useRole'
-import RoleSelector from './RoleSelector'
 
 function Navbar() {
-  const { hasPermission } = useRole()
+  const { hasPermission, currentRole } = useRole()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <header className="navbar">
@@ -24,7 +31,14 @@ function Navbar() {
           ))}
       </nav>
 
-      <RoleSelector />
+      <div className="user-panel">
+        
+        <strong>{user?.nombreUsuario || 'Usuario'}</strong>
+        <small>{currentRole.label}</small>
+        <button className="logout-button" type="button" onClick={handleLogout}>
+          Cerrar sesion
+        </button>
+      </div>
     </header>
   )
 }
