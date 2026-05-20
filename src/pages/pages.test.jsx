@@ -8,6 +8,12 @@ import AsistenciaDetalle from './AsistenciaDetalle'
 import RegistrarAnotacion from './RegistrarAnotacion'
 import RegistrarAsistencia from './RegistrarAsistencia'
 
+const validarMocks = vi.hoisted(() => ({
+  verificarEstudianteExiste: vi.fn(),
+}))
+
+vi.mock('../utils/validarEstudiante', () => validarMocks)
+
 const apiMocks = vi.hoisted(() => ({
   getPerfilEstudiante: vi.fn(),
   getPerfilEstudiantePorRut: vi.fn(),
@@ -67,6 +73,7 @@ describe('paginas frontend', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.clear()
+    validarMocks.verificarEstudianteExiste.mockResolvedValue('')
   })
 
   it('Home muestra acciones segun rol inspector', () => {
@@ -75,6 +82,14 @@ describe('paginas frontend', () => {
     expect(screen.getByText('Inspector')).toBeInTheDocument()
     expect(screen.getAllByText('Registrar asistencia').length).toBeGreaterThan(0)
     expect(screen.queryByText('Registrar anotacion')).not.toBeInTheDocument()
+  })
+
+  it('Home muestra permisos de profesor', () => {
+    renderWithProviders(<Home />, { rol: 'PROFESOR' })
+
+    expect(screen.getByText('Profesor')).toBeInTheDocument()
+    expect(screen.getByText('Puede registrar anotaciones')).toBeInTheDocument()
+    expect(screen.getAllByText('Registrar anotacion').length).toBeGreaterThan(0)
   })
 
   it('PerfilEstudiante busca por RUT y muestra datos completos', async () => {
@@ -156,6 +171,31 @@ describe('paginas frontend', () => {
       estudianteId: 1,
       descripcion: 'Participa activamente',
     }))
+  })
+
+  it('RegistrarAsistencia valida rut de quien registra', () => {
+    renderWithProviders(<RegistrarAsistencia />)
+
+    fireEvent.change(screen.getByLabelText(/registrada por/i), { target: { value: '   ' } })
+    fireEvent.click(screen.getByRole('button', { name: /guardar asistencia/i }))
+
+    expect(screen.getByText('Debe ingresar el RUT de quien registra.')).toBeInTheDocument()
+  })
+
+  it('RegistrarAsistencia muestra error si estudiante no existe', async () => {
+    validarMocks.verificarEstudianteExiste.mockResolvedValue('No existe un estudiante registrado con el ID 99.')
+    renderWithProviders(<RegistrarAsistencia />)
+
+    fireEvent.change(screen.getByLabelText(/id estudiante/i), { target: { value: '99' } })
+    fireEvent.click(screen.getByRole('button', { name: /guardar asistencia/i }))
+
+    expect(await screen.findByText('No existe un estudiante registrado con el ID 99.')).toBeInTheDocument()
+  })
+
+  it('RegistrarAsistencia restringe acceso a alumno', () => {
+    renderWithProviders(<RegistrarAsistencia />, { rol: 'ALUMNO' })
+
+    expect(screen.getByText('Acceso restringido')).toBeInTheDocument()
   })
 
   it('RegistrarAsistencia envia datos y muestra exito', async () => {

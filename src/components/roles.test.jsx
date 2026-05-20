@@ -53,4 +53,10 @@ describe('roles y permisos', () => {
     expect(screen.queryByText('Registrar anotacion')).not.toBeInTheDocument()
     expect(screen.queryByText('Registrar asistencia')).not.toBeInTheDocument()
   })
+
+  it('Navbar muestra crear usuario solo para inspector', () => {
+    renderRole(<Navbar />, 'INSPECTOR')
+
+    expect(screen.getByText('Crear usuario')).toBeInTheDocument()
+  })
 })
