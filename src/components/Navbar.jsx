@@ -32,7 +32,7 @@ function Navbar() {
       </nav>
 
       <div className="user-panel">
-        <span>Sesion activa</span>
+        
         <strong>{user?.nombreUsuario || 'Usuario'}</strong>
         <small>{currentRole.label}</small>
         <button className="logout-button" type="button" onClick={handleLogout}>

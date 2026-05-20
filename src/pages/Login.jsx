@@ -42,7 +42,7 @@ function Login() {
           <img className="login-logo" src={logo} alt="Logo Colegio Bernardo O'Higgins" />
           <p className="eyebrow">Colegio Bernardo O'Higgins</p>
           <h1>Inicio de sesion</h1>
-          <p>Ingrese su usuario o correo y contrasena para acceder al libro de clases digital.</p>
+          <p>Ingrese su usuario o correo y contraseña para acceder al libro de clases digital.</p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
@@ -58,12 +58,12 @@ function Login() {
           </label>
 
           <label>
-            Contrasena
+            Contraseña
             <input
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Ingrese su contrasena"
+              placeholder="Ingrese su contraseña"
               autoComplete="current-password"
             />
           </label>
