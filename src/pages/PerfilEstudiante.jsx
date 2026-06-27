@@ -4,10 +4,8 @@ import Field from '../components/Field'
 import InfoCard from '../components/InfoCard'
 import RoleGuard from '../components/RoleGuard'
 import { usePerfilEstudianteBusqueda } from '../hooks/usePerfilEstudianteBusqueda'
-import { useRole } from '../hooks/useRole'
 
 function PerfilEstudiante() {
-  const { currentRole } = useRole()
   const busqueda = usePerfilEstudianteBusqueda()
 
   return (
