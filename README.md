@@ -4,7 +4,7 @@ Frontend React de la Plataforma de Libro de Clases Digital del Colegio Bernardo 
 
 Esta aplicación permite consultar perfiles de estudiantes, revisar anotaciones y asistencias, y registrar nuevas anotaciones o asistencias según el rol seleccionado.
 
-El frontend consume solo al BFF `bff-libroclases`, que corre en el puerto `8083`.
+El frontend consume el **API Gateway** en el puerto `8080`, que enruta al BFF `bff-libroclases`.
 
 ## Tecnologías
 
@@ -22,18 +22,19 @@ Antes de usar el frontend, levantar los servicios backend:
 
 - `ms-academico`: `http://localhost:8081`
 - `ms-asistencia`: `http://localhost:8082`
-- `bff-libroclases`: `http://localhost:8083`
+- `api-gateway`: `http://localhost:8080`
+- `bff-libroclases` (interno): `http://localhost:8083`
 
 El frontend se conecta al BFF mediante:
 
 ```text
-http://localhost:8083/api/v1
+http://localhost:8080/api/v1
 ```
 
 Si se necesita cambiar la URL del BFF, usar la variable:
 
 ```env
-VITE_API_URL=http://localhost:8083/api/v1
+VITE_API_URL=http://localhost:8080/api/v1
 ```
 
 ## Instalación

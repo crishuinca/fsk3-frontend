@@ -13,7 +13,7 @@ function PerfilEstudiante() {
   return (
     <section className="page">
       <h1>Perfil de estudiante</h1>
-      <p>Vista actual: {currentRole.label}.</p>
+      
 
       <BusquedaPerfilForm
         descripcion="Busca un estudiante y muestra sus datos junto con asistencias y anotaciones."
