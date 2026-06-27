@@ -12,6 +12,8 @@ dist
 dist-ssr
 dist-lib
 coverage
+playwright-report
+test-results
 *.tgz
 *.local
 
