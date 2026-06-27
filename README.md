@@ -133,6 +133,22 @@ Ejecutar tests con coverage:
 npm run test:coverage
 ```
 
+### Tests E2E (Playwright)
+
+Requiere el stack levantado (MySQL, Eureka, microservicios, BFF, API Gateway) y el frontend en `http://localhost:5173`:
+
+```powershell
+npm run dev
+```
+
+En otra terminal:
+
+```powershell
+npm run test:e2e
+```
+
+El test principal recorre login con `profesor` / `clave123` y consulta el perfil del estudiante ID 1.
+
 El reporte HTML queda en:
 
 ```text
@@ -219,7 +235,7 @@ Alumno:
 
 - Consulta su información académica, anotaciones y asistencia.
 
-Actualmente no hay login real. Para EV2 se usa un selector de rol simulado, suficiente para demostrar separación de funciones por perfil.
+El acceso usa login real contra el BFF (JWT). Usuario de prueba: `profesor` / `clave123`.
 
 ## Rutas principales
 
