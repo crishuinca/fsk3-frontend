@@ -147,7 +147,7 @@ En otra terminal:
 npm run test:e2e
 ```
 
-El test principal recorre login con `profesor` / `clave123` y consulta el perfil del estudiante ID 1.
+El test recorre login, perfil, anotaciones, asistencia, registro de ambos y cierre de sesion (rol profesor).
 
 El reporte HTML queda en:
 
